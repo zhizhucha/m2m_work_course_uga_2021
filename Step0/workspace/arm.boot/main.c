@@ -1,5 +1,4 @@
 #include "main.h"
-
 /**
  * Receive a character from the given uart, this is a non-blocking call.
  * Returns 0 if there are no character available.
@@ -8,8 +7,8 @@
 int uart_receive(int uart, unsigned char *s) {
   unsigned short* uart_fr = (unsigned short*) (uart + UART_FR);
   unsigned short* uart_dr = (unsigned short*) (uart + UART_DR);
-  if (*uart_fr & UART_RXFE)
-    return 0;
+  while (*uart_fr & UART_RXFE);
+    //return 0;
   *s = (*uart_dr & 0xff);
   return 1;
 }
@@ -70,11 +69,13 @@ void c_entry() {
     if (0==uart_receive(UART0,&c))
     continue;
 #endif
-    if (c == 13) {
+
+    kprintf(&c);
+    /*if (c == 13) {
       uart_send(UART0, '\r');
       uart_send(UART0, '\n');
     } else {
       uart_send(UART0, c);
-    }
+    }*/
   }
 }

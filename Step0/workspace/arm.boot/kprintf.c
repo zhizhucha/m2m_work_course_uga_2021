@@ -54,10 +54,12 @@ typedef unsigned short u_short;
 typedef unsigned long long u_quad_t;
 typedef long long quad_t;
 typedef unsigned long uintptr_t;
-typedef long ptrdiff_t;
+//typedef long ptrdiff_t;
 typedef unsigned int size_t;
 typedef int ssize_t;
+#ifndef NULL
 #define NULL (void*)0
+#endif
 
 #define NBBY    8               /* number of bits in a byte */
 char const hex2ascii_data[] = "0123456789abcdefghijklmnopqrstuvwxyz";
