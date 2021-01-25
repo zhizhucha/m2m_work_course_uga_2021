@@ -470,7 +470,7 @@ int kvprintf(char const *fmt, void (*func)(int, void*), void *arg, int radix,
 				PCHAR(*percent++)
 			;
 			/*
-			 * Since we ignore an formatting argument it is no
+			 * Since we ignore a formatting argument it is no
 			 * longer safe to obey the remaining formatting
 			 * arguments as the arguments will no longer match
 			 * the format specs.

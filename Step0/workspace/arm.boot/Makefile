@@ -37,7 +37,7 @@ debug: all
 	$(QEMU) -M $(MACHINE) -m $(MEMORY) -nographic -kernel kernel.bin -serial mon:stdio -gdb tcp::1234 -S
 
 debug-cli:
-	gdb-multiarch -q --nh -ex 'set architecture arm' -ex 'file kernel.elf' -ex 'target remote localhost:1234' -ex 'layout split' -ex 'layout regs'
+	gdb-multiarch -q -ex 'set architecture arm' -ex 'file kernel.elf' -ex 'target remote localhost:1234' -ex 'layout split' -ex 'layout regs'
 
 kill:
 	pkill qemu-system-arm
