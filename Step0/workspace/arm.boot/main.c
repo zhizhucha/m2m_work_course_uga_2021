@@ -70,7 +70,44 @@ void c_entry() {
     continue;
 #endif
 
-    kprintf(&c);
+      
+      //Print code of c instead of char
+      //kprintf("%d", (int)c);
+
+
+      //TODO: Complete the code to edit line
+      char b[4] = {'\0'};
+      b[0] = c;
+
+      if(c == 27){
+        uart_receive(UART0, &c);
+        b[1] = c;
+        uart_receive(UART0, &c);
+        b[2] = c;
+        if(c == 51){
+          uart_receive(UART0, &c);
+          b[2] = 68;
+          kprintf(b);
+          c =50;
+          kprintf(c);
+        }
+      }else if(c == 127){
+        b[0] = 27; b[1] = 91; b[2] = 68;
+        kprintf(b);
+        c =50;
+        kprintf(c);
+        b[0] = 27; b[1] = 91; b[2] = 68;
+        kprintf(b);
+      }
+
+      kprintf(b);
+
+
+      
+
+
+
+      
     /*if (c == 13) {
       uart_send(UART0, '\r');
       uart_send(UART0, '\n');
