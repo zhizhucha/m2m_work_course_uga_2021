@@ -1,9 +1,7 @@
 #ifndef UART_H
 #define UART_H
+
 #include <stdint.h>
-
-
-
 #include <stddef.h>
 /**
  * Look at the document describing the Versatile Application Board:
@@ -45,6 +43,12 @@
 #define UART_DR 0x00
 #define UART_FR 0x18
 
+/**
+ * Receive interrupt mask. A read returns the current mask for the UARTRXINTR interrupt.
+ * On a write of 1, the mask of the UARTRXINTR interrupt is set. A write of 0 clears the mask.
+ */
+#define UART_IMSC 0x38  // [r/w] Masked interrupt status register
+
 #define UART_TXFE (1<<7)
 #define UART_RXFF (1<<6)
 #define UART_TXFF (1<<5)
@@ -53,30 +57,49 @@
 
 extern unsigned char CC;
 
+//Interrupt for RX event
+#define UART_RXRIS (1<<4) // Or RXIM Receive Interrupt Mask
+
 // [read/write] Interrupt mask set/clear register [:11]
-#define UART0_MIS (*((volatile uint32_t *) (UART0 + 0x040))) 
+#define UART_MIS 0x040 
 // [read] Raw interrupt status register [:11]
-#define UART0_RIS (*((volatile uint32_t *) (UART0 + 0x03C))) 
- // [read] Masked interrupt status register
-#define UART0_IMSC (*((volatile uint32_t *) (UART0 + 0x038)))
+#define UART_RIS 0x03C 
+
 //[write] Interrupt Clear Register [:11]
-#define UART_TICR (*((volatile uint32_t *) (UART0 + 0x044))) 
-
-void uart0_init_regs();
-
-void enable_irqs_uart0_receiving();
-void uart0_isr();
+#define UART_TICR 0x044 
 
 
-//TODO : Circular Buffer
+
+
+#define UART0_MIS (*((volatile uint32_t *) (UART0 + 0x040)))
+#define MAX_CHARS 256
+
+
+//Circullar buffer
+// It is used to contains the bytes retrieved from the uart
+extern volatile uint8_t buffer[MAX_CHARS];
+extern int buffer_head;
+extern int buffer_tail;
 
 
 /**
- * Get a byte from uart.
- * It uart fifo is empty, return '\0'
- **/
-unsigned char  uart_get_byte(int uart);
+ * Initialization of uart regs.
+ * Enable the generation of interrupts for the given uart
+ * We only want interrupt generation for the receive event
+ */
+void uart_init_regs(int uart);
 
+/**
+ * Handler for uart interrupts
+ * It is called from the irq_handler.
+ */
+void uart_isr(int uart);
+
+/**
+ * Retrieve a byte from the given uart, this is a non-blocking call
+ * Its returns null char if uart buffer is empty
+ */
+unsigned char  uart_get_byte(int uart);
 
 /**
  * Sends a character through the given uart, this is a blocking call.

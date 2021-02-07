@@ -13,53 +13,38 @@
 
 /* Polling the PIC (via mmio reads) */
 int pic_next_raised_irq(){
-  
+  //TODO: Get which is the current interrupt.
   return UART0_IRQ;
   
 }
 
 
-/* Re-enabling interrupts at the PIC */
-void pic_enable_all_irqs(){
-  //TODO
-  irqs_enable();
-}
-
-
-
-
 /* Interrupt service routine, upcalled from assembly */
-void __attribute__((interrupt)) irq_handler(){
+void irq_handler(){
   CC = 'g';
   int count = 1;
-  for(;;){
     int irq = pic_next_raised_irq();
     
     switch(irq){
       case -1:
-        pic_enable_all_irqs();
+        irqs_enable();
         return;
       case UART0_IRQ:
-
-        uart0_isr();
+        uart_isr(UART0);
         irqs_enable();
         break;
       default:
         break;
     }
-
-  }
 }
 
 
 void irqs_setup(){
-    //      setup of the IRQ mode on the processor
+    // setup of the IRQ mode on the processor
     _irqs_setup();
-    //      enable the UART0 IRQ
+    // enable the UART0 IRQ
     uint32_t* pic_int_enable = (uint32_t*) (PIC_INT_ENABLE);
-  *pic_int_enable = 1 << 12 ; // Enable UART0 IRQ
-
-  
+   *(pic_int_enable) = UART0_IRQ_MASK; // Enable UART0 IRQ  
 }
 
 /* Turns on interrupts: processor can be interrupted by the VIC */

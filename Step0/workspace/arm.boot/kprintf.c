@@ -35,27 +35,30 @@
  */
 
 #include "main.h"
-
+#include "uart.h"
+#include <stdint.h>
 // typedef unsigned long size_t;
 // typedef long ssize_t;
 // #define NULL ((void*)0)
 
 #ifdef __64BIT__
-typedef unsigned long long uintmax_t;
-typedef long long intmax_t;
+//typedef unsigned long long uintmax_t;
+//typedef long long intmax_t;
 #else
-typedef unsigned int uintmax_t;
-typedef int intmax_t;
+////typedef unsigned int uintmax_t;
+//typedef int intmax_t;
 #endif
+
 typedef unsigned char u_char;
 typedef unsigned int u_int;
 typedef unsigned long u_long;
 typedef unsigned short u_short;
 typedef unsigned long long u_quad_t;
 typedef long long quad_t;
-typedef unsigned long uintptr_t;
+
+//typedef unsigned long uintptr_t;
 //typedef long ptrdiff_t;
-typedef unsigned int size_t;
+//typedef unsigned int size_t;
 typedef int ssize_t;
 #ifndef NULL
 #define NULL (void*)0

@@ -16,15 +16,41 @@
 
 /* Interrupt signals to PIC (Primary Interrupt Controller) */
 #define WATCHDOG_IRQ    0   // PIC_0
+
 #define UART0_IRQ       12 // PIC_12
+#define UART0_IRQ_MASK (1<<UART0_IRQ) 
 extern unsigned char CC;
+
+
+//Assembly method calls
+void _irqs_setup(void);
+void _irqs_enable(void);
+void _copy_vector(void);
+void _wfi();
+
+
+
 
 void uart_init_regs(int uart);
 
 
 void irq_handler();
+
+
+/**
+ * Setup interrupts on the processor
+ * In our case, we also enable the UART0 IRQ
+ */
 void irqs_setup();
+
+/**
+ * Enable interrupts on the processor
+ */
 void irqs_enable();
+
+/**
+ * Disable interrupts on the processor
+ */
 void irqs_disable();
 
 

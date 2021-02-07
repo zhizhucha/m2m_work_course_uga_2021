@@ -10,7 +10,8 @@ LDFLAGS= -T kernel.ld
 MACHINE=versatilepb
 MACHINE=versatileab
 
-MEMORY=1M
+MEMORY=32M
+
 
 # Notice that we link with our own linker script: test.ld
 all: startup.o main.o kprintf.o exception.o uart.o isr.o
@@ -18,7 +19,7 @@ all: startup.o main.o kprintf.o exception.o uart.o isr.o
 	$(TOOLCHAIN)-objcopy -O binary kernel.elf kernel.bin
 
 clean: 
-	rm -f startup.o test.o kernel.elf
+	rm -f *.o kernel.elf
 
 startup.o: startup.s
 	$(TOOLCHAIN)-as $(ASFLAGS) startup.s -o startup.o
@@ -43,10 +44,10 @@ run: all
 
 debug: all
 	
-	$(QEMU) -M $(MACHINE) -m $(MEMORY) -nographic -kernel kernel.bin -serial mon:stdio -gdb tcp::1234 -S
+	$(QEMU) -M $(MACHINE) -m $(MEMORY) -nographic  -kernel kernel.bin -serial mon:stdio -gdb tcp::1234  -S
 
 debug-cli:
-	gdb-multiarch -q -ex 'set architecture arm' -ex 'file kernel.elf' -ex 'target remote localhost:1234' -ex 'layout split' -ex 'layout regs'
+	gdb-multiarch   -ex 'file kernel.elf'  -ex 'target remote localhost:1234' -ex 'layout split' -ex 'layout regs'
 
 kill:
 	pkill qemu-system-arm

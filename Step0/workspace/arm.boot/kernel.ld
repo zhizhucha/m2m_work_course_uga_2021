@@ -27,6 +27,7 @@ SECTIONS
  /*
   * Now include the other sections of code.
   */
+ .exception . : { exception.o(.text) }
  .text : { *(.text) }
  /*
   * Include the initialized data sections

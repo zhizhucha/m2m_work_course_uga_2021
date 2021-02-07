@@ -1,36 +1,44 @@
 #include "uart.h"
-
-
+volatile uint8_t buffer[MAX_CHARS] = {0};
+int buffer_head = 0;
+int buffer_tail = 0;
 unsigned char CC = 'a';
 
-void uart0_init_regs(){
-  UART0_IMSC = 1<<4; // Enable RXIM interrupt
+
+/**
+ * Initialization of uart regs.
+ * Enable the generation of interrupts for the given uart
+ */
+void uart_init_regs(int uart){
+
+ int* uart_imsc_addr =  (int*)(uart + UART_IMSC);
+ *(uart_imsc_addr) = UART_RXRIS ; // Enable interrupt generation for Receive event
+   
 }
 
-
-/*
-  Acknowledge the uart interrupt in uart0_isr
-*/
-uart_irq_ack(int uart){
-  //TODO
-}
+  
 
 
-/*
-  Uart Interrupt Service Request
-*/
-void uart0_isr(){
-
-  unsigned char c = uart_get_byte(UART0);
+/**
+ * Handler for uart interrupts
+ * It is called from the irq_handler.
+ */
+void uart_isr(int uart){
+  unsigned char c = uart_get_byte(uart);
   while(c != '\0'){
-    //TODO: Implement buffer
-   CC = c;
-    continue; 
+    int next = (buffer_head + 1) % MAX_CHARS;
+    if(next==buffer_tail)return;
+    buffer[buffer_head] = c;
+    buffer_head = next;
+    CC = c;
+    c = uart_get_byte(UART0);
   }
-  uart_irq_ack(UART0);
 }
 
-
+/**
+ * Retrieve a byte from the given uart, this is a non-blocking call
+ * Its returns null char if uart buffer is empty
+ */
 unsigned char  uart_get_byte(int uart){
   unsigned short* uart_fr = (unsigned short*) (uart + UART_FR);
   unsigned short* uart_dr = (unsigned short*) (uart + UART_DR);
