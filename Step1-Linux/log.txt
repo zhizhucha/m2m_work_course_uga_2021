@@ -1,0 +1,45 @@
+======================================================================
+Building hello...
+======================================================================
+initrd.hello: gzip compressed data, max compression, from Unix, original size modulo 2^32 709632
+======================================================================
+Creating the disk image...
+======================================================================
+======================================================================
+Installing GRUB MBR, called stage1 
+======================================================================
+======================================================================
+Partitioning the disk image...
+======================================================================
+/usr/sbin/parted
+======================================================================
+Loop mount the disk image...
+======================================================================
+======================================================================
+Creating the file system...
+======================================================================
+Discarding device blocks:  4096/32000           done                            
+Creating filesystem with 32000 4k blocks and 32000 inodes
+
+Allocating group tables: 0/1   done                            
+Writing inode tables: 0/1   done                            
+Writing superblocks and filesystem accounting information: 0/1   done
+
+======================================================================
+Copying the mini-dist contents...
+======================================================================
+======================================================================
+Syncing the mounted file systems, 
+before unmounting and destructing our loop device...
+======================================================================
+Installing GRUB...
+======================================================================
+======================================================================
+ GRUB - AUTOMATED INSTALL
+======================================================================
+[?1049h[22;0;0t[1;38r(B[m[4l[?7h[?1h=[H[2J[2;5HGNU GRUB  version 0.97  (640K lower / 3072K upper memory)[4d [ Minimal BASH-like line editing is supported.  For the first word, TAB[5;4Hlists possible command completions.  Anywhere else TAB lists the possible[6;4Hcompletions of a device/filename. ][8dgrub> root (hd0,0)[9d Filesystem type is ext2fs, partition type 0x83[11dgrub> setup (hd0)[12d Checking if "/boot/grub/stage1" exists... no[13d Checking if "/grub/stage1" exists... no[15dError 15: File not found[17dgrub> quit[38;1H[?1049l[23;0;0t[?1l>[38;1H[?1049l[23;0;0t[?1l>======================================================================
+Booting QEMU on our disk image...
+you should see the GRUB menu 
+that is part of your Mini-distribution
+under MiniDist/boot/grub/menu.lst
+
