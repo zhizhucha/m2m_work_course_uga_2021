@@ -1,6 +1,6 @@
 
 title Linux 4.4 - root=/dev/ram - rdinit=/hello
-kernel /boot/vmlinuz-4.4.113-disk root=/dev/ram rdinit=/hello console=ttyS0,115200n8 console=tty0
+kernel /boot/vmlinuz-4.4.113-ram root=/dev/ram rdinit=/hello console=ttyS0,115200n8 console=tty0
 initrd /boot/initrd.hello
 boot
 

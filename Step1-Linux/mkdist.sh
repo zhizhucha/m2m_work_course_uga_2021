@@ -65,8 +65,7 @@ fi
 
 cp hello/hello $DIST_DIR/
 check $LINENO
-mkdir -p $DIST_DIR/boot
-check $LINENO
+
 cp hello/initrd.hello $DIST_DIR/boot/initrd.hello
 check $LINENO
 
@@ -102,7 +101,7 @@ echo "======================================================================"
 echo "Partitioning the disk image..."
 echo "======================================================================"
 
-which parted
+sudo which parted
 if [ $? -ne 0 ] ; then
   echo "Missing the disk utility: parted"
   echo "Please install it:"
@@ -111,11 +110,11 @@ if [ $? -ne 0 ] ; then
 fi
 
 # Create an msdos label, always the first step in creating a disk.
-parted -s $DISK mklabel msdos
+sudo parted -s $DISK mklabel msdos
 
 # Create a primary parttion, starting at sector 256, taking all the
 # remaining sectors.
-parted -s $DISK mkpart primary ext2 256s 256000s
+sudo parted -s $DISK mkpart primary ext2 256s 256000s
 check $LINENO
 
 echo "======================================================================"
@@ -123,7 +122,7 @@ echo "Loop mount the disk image..."
 echo "======================================================================"
 
 # Grab available loop device
-DEVLOOP=`losetup -f`
+DEVLOOP=`sudo losetup -f`
 check $LINENO
 
 sudo losetup -o131072 $DEVLOOP $DISK
@@ -160,6 +159,7 @@ check $LINENO
 
 # The previous command could have been written:
 #   ( cd $DIST_DIR ; sudo cp -ar . $MOUNT_DIR )
+ls $MOUNT_DIR
 
 echo "======================================================================"
 echo "Syncing the mounted file systems, "
@@ -213,6 +213,7 @@ else
   # Fortunately, we can automate the installation of GRUB,
   # using GRUB itself, directly from Linux.
   # We need to create a device map that maps GRUB hd0 to our disk.
+  
   DEVICE_MAP=/tmp/device.map
   rm -f $DEVICE_MAP
   cat >> $DEVICE_MAP <<EOF

@@ -1,14 +1,27 @@
 # default 1
 # timeout 0
 
-title Linux 4.4 - Initial RamDisk Boot
+title Linux 4.4 - Initial RamDisk Boot (Hello)
 kernel /boot/vmlinuz-4.4.113-ram root=/dev/ram rdinit=/hello 
 initrd /boot/initrd.hello
 boot
 
-title Linux 4.4 - HardDisk Boot
+title Linux 4.4 - HardDisk Boot (Hello)
 kernel /boot/vmlinuz-4.4.113-disk root=/dev/sda1 init=/hello
 boot
+
+title Linux 4.4 - HardDisk Boot (Init) (A) 
+kernel /boot/vmlinuz-4.4.113-disk root=/dev/sda1 init=/init console=tty0
+boot
+
+title Linux 4.4 - HardDisk Boot (Init) (B)
+kernel /boot/vmlinuz-4.4.113-disk root=/dev/sda1 init=/init console=ttyS0,115200n8
+boot
+
+title Linux 4.4 - HardDisk Boot (Init) (C)
+kernel /boot/vmlinuz-4.4.113-disk root=/dev/sda1 init=/init console=ttyS0,115200n8 console=tty0
+boot
+
 
 # Play with these kernel options!
 # console=ttyS0,115200n8
